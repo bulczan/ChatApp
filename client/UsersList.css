@@ -8,9 +8,15 @@
 }
 
 .UsersOnline {
-    padding: 20px;
+    padding: 10px;
     text-align: center;
     background: #ccc;
+}
+
+.UserNickname {
+    padding: 20px;
+    text-align: center;
+    background: #ddd;
 }
 
 .UsersList {
@@ -22,5 +28,4 @@
     list-style: none;
     border-bottom: 1px solid #ccc;
     padding: 20px;
-    margin: 0 0 0 20px;
 }

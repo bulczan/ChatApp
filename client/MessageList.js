@@ -2,8 +2,8 @@ import React from 'react';
 import styles from './MessageList.css';
 
 const Message = props => (
-    <div className={styles.Message}>
-        <strong>{props.from} :</strong>
+    <div className={props.className}>
+        <strong>{props.from}: </strong>
         <span>{props.text}</span>
     </div>
 );
@@ -17,6 +17,7 @@ const MessageList = props => (
                         key={i}
                         from={message.from}
                         text={message.text}
+                        className={`${styles.Message} ${(message.from === props.name) ? styles.MyMessage : null}`}
                     />
                 );
             })

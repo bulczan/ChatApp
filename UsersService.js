@@ -1,5 +1,3 @@
-import { throws } from "assert";
-
 class UsersService {
     constructor() {
         this.users = [];

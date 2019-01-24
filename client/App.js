@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
-import io from 'socket-io-client';
+import io from 'socket.io-client';
 import styles from './App.css';
 import MessageForm from './MessageForm';
 import MessageList from './MessageList';
@@ -17,7 +17,7 @@ class App extends Component {
 
     componentDidMount() {
         socket.on('message', message => this.messageReceive(message));
-        socket.on('update', ({users}) => this.shouldComponentUpdate.chatUpdate(users));
+        socket.on('update', ({users}) => this.chatUpdate(users));
     }
 
     messageReceive(message) {
@@ -40,10 +40,6 @@ class App extends Component {
         socket.emit('join', name);
     }
 
-    render() {
-        return this.state.name !== '' ? this.renderLayout : this.renderUserForm;
-    }
-
     renderLayout() {
         const { App, AppHeader, AppTitle, AppRoom, AppBody, MessageWrapper } = styles;
         return (
@@ -59,10 +55,12 @@ class App extends Component {
                 <div className={AppBody}>
                     <UsersList
                         users={this.state.users}
+                        name={this.state.name}
                     />
                     <div className={MessageWrapper}>
                         <MessageList
                             messages={this.state.messages}
+                            name={this.state.name}
                         />
                         <MessageForm
                             onMessageSubmit={message => this.handleMessageSubmit(message)}
@@ -76,6 +74,10 @@ class App extends Component {
 
     renderUserForm() {
         return (<UserForm onUserSubmit={name => this.handleUserSubmit(name)} />)
+    }
+
+    render() {
+        return ( this.state.name !== '' ? this.renderLayout() : this.renderUserForm() );
     }
 };
 

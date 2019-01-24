@@ -1,18 +1,19 @@
 import React from 'react';
 import styles from './UsersList.css';
 
-const {Users, UsersOnline, UsersList, UserItem} = styles;
-
 const UsersList = props => (
-    <div className={Users}>
-        <div className={UsersOnline}>
-            {props.user.length} people online
+    <div className={styles.Users}>
+        <div className={styles.UsersOnline}>
+            {props.users.length} people online
         </div>
-        <ul className={UsersList}>
+        <div className={styles.UserNickname}>
+            {props.name}
+        </div>
+        <ul className={styles.UsersList}>
             {
-                props.users.map((user) => {
+                props.users.filter(user => user.name !== props.name).map((user) => {
                     return (
-                        <li key={user.id} className={UserItem}>
+                        <li key={user.id} className={styles.UserItem}>
                             {user.name}
                         </li>
                     );
