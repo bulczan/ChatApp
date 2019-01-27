@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import styles from './MessageForm.css';
+import io from 'socket.io-client';
+const socket = io('/');
 
 class MessageForm extends Component {
     constructor(props) {
@@ -19,6 +21,11 @@ class MessageForm extends Component {
 
     changeHandler(e) {
         this.setState({ text: e.target.value });
+        socket.emit('typing', {
+            from: this.props.name,
+            typing: true
+        });
+        socket.on('typing', isTyping => this.props.handleTyping(isTyping))
     }
 
     render() {

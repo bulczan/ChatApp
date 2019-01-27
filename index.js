@@ -37,12 +37,34 @@ io.on('connection', (socket) => {
 });
 
 io.on('connection', (socket) => {
+    socket.on('typing', (typing) => {
+        socket.broadcast.emit('typing', {
+            from: 'chat',
+            text: `${typing.from} is typing...`,
+            typing: true
+        })
+    });
+});
+
+io.on('connection', (socket) => {
+    socket.on('saysHello', (name) => {
+        socket.broadcast.emit('saysHello', {
+            text: `${name} says HELLO`,
+            from: 'chat'
+        })
+    });
+});
+
+io.on('connection', (socket) => {
     socket.on('message', (message) => {
-        const {name} = usersService.getUserById(socket.id);
-        socket.broadcast.emit('message', {
-            text: message.text,
-            from: name
-        });
+        // po co tutaj destrukturyzacja ???
+        if (usersService.getUserById(socket.id)) {
+            const {name} = usersService.getUserById(socket.id);
+            socket.broadcast.emit('message', {
+                text: message.text,
+                from: name
+            });
+        }
     });
 });
 

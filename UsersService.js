@@ -8,7 +8,9 @@ class UsersService {
     }
 
     getUserById(userId) {
-        return this.users.find(user => user.id === userId)
+        if ( userId ) {
+            return this.users.find(user => user.id === userId);
+        }
     }
 
     addUser(user) {

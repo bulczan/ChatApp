@@ -21,3 +21,9 @@
     background: #eee;
     align-self: flex-end;
 }
+
+.AutoMessage {
+    align-self: center;
+    background: rgb(173, 197, 243);
+    padding: 5px 15px;;
+}

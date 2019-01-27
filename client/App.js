@@ -20,8 +20,25 @@ class App extends Component {
         socket.on('update', ({users}) => this.chatUpdate(users));
     }
 
+    handleTyping(msg) {
+        const typingMessage = msg;
+        let messages = this.state.messages;
+        if(messages[0].text !== typingMessage.text) {
+                messages = [typingMessage, ...this.state.messages];
+                this.setState({ messages: [...messages] });
+        }
+    }
+
     messageReceive(message) {
-        const messages = [message, ...this.state.messages];
+        let messages = this.state.messages;
+        let newMessages = messages.filter(msg => msg.typing !== true);
+        messages = [message, ...newMessages];
+        this.setState({ messages });
+    }
+
+    handleWelcome(hello) {
+        const welcomeMessage = hello;
+        const messages = [welcomeMessage, ...this.state.messages];
         this.setState({ messages });
     }
 
@@ -38,6 +55,8 @@ class App extends Component {
     handleUserSubmit(name) {
         this.setState({ name });
         socket.emit('join', name);
+        socket.emit('saysHello', name);
+        socket.on('saysHello', (hello) => this.handleWelcome(hello));
     }
 
     renderLayout() {
@@ -65,6 +84,7 @@ class App extends Component {
                         <MessageForm
                             onMessageSubmit={message => this.handleMessageSubmit(message)}
                             name={this.state.name}
+                            handleTyping={msg => this.handleTyping(msg)}
                         />
                     </div>
                 </div>
