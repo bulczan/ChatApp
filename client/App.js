@@ -24,15 +24,15 @@ class App extends Component {
         const typingMessage = msg;
         let messages = this.state.messages;
         if(messages[0].text !== typingMessage.text) {
-                messages = [typingMessage, ...this.state.messages];
+                messages = [typingMessage, ...messages];
                 this.setState({ messages: [...messages] });
         }
     }
 
     messageReceive(message) {
         let messages = this.state.messages;
-        let newMessages = messages.filter(msg => msg.typing !== true);
-        messages = [message, ...newMessages];
+        let restMessages = messages.filter(msg => msg.typing !== true);
+        messages = [message, ...restMessages];
         this.setState({ messages });
     }
 
@@ -47,8 +47,10 @@ class App extends Component {
     }
 
     handleMessageSubmit(message) {
-        const messages = [message, ...this.state.messages];
-        this.setState({ messages });
+        let messages = [...this.state.messages];
+        let restMessages = messages.filter(msg => msg.typing !== true);
+        messages = [message, ...restMessages];
+        this.setState({ messages: [...messages] });
         socket.emit('message', message);
     }
 

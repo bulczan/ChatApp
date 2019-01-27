@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
 io.on('connection', (socket) => {
     socket.on('saysHello', (name) => {
         socket.broadcast.emit('saysHello', {
-            text: `${name} says HELLO`,
+            text: `${name} joined ChatApp`,
             from: 'chat'
         })
     });
@@ -57,7 +57,6 @@ io.on('connection', (socket) => {
 
 io.on('connection', (socket) => {
     socket.on('message', (message) => {
-        // po co tutaj destrukturyzacja ???
         if (usersService.getUserById(socket.id)) {
             const {name} = usersService.getUserById(socket.id);
             socket.broadcast.emit('message', {
