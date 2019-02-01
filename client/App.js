@@ -20,19 +20,22 @@ class App extends Component {
         socket.on('update', ({users}) => this.chatUpdate(users));
     }
 
-    handleTyping(msg) {
-        const typingMessage = msg;
-        let messages = this.state.messages;
-        if(messages[0].text !== typingMessage.text) {
-                messages = [typingMessage, ...messages];
-                this.setState({ messages: [...messages] });
+    handleTyping(typingMessage) {
+        let {messages} = this.state;
+        const users = typingMessage.usersTyping;
+        const usersTyping = users.join(' & ');
+        if (users.length === 1) {
+            typingMessage.text = `${usersTyping} is typing...`;
+        } else if (users.length > 1) {
+            typingMessage.text = `${usersTyping} are typing...`;
         }
+        messages = [typingMessage, ...messages.filter(msg => !msg.typing)];
+        this.setState({ messages: [...messages] });
     }
 
     messageReceive(message) {
-        let messages = this.state.messages;
-        let restMessages = messages.filter(msg => msg.typing !== true);
-        messages = [message, ...restMessages];
+        let {messages} = this.state;
+        messages = [message, ...messages.filter(msg => !msg.typing)];
         this.setState({ messages });
     }
 
@@ -47,18 +50,17 @@ class App extends Component {
     }
 
     handleMessageSubmit(message) {
-        let messages = [...this.state.messages];
-        let restMessages = messages.filter(msg => msg.typing !== true);
-        messages = [message, ...restMessages];
+        let {messages} = this.state;
+        messages = [message, ...messages.filter(msg => !msg.typing)];
         this.setState({ messages: [...messages] });
         socket.emit('message', message);
     }
 
     handleUserSubmit(name) {
-        this.setState({ name });
         socket.emit('join', name);
         socket.emit('saysHello', name);
-        socket.on('saysHello', (hello) => this.handleWelcome(hello));
+        socket.on('saysHello', hello => this.handleWelcome(hello));
+        this.setState({ name });
     }
 
     renderLayout() {

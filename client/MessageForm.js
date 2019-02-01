@@ -7,6 +7,11 @@ class MessageForm extends Component {
     constructor(props) {
         super(props);
         this.state = {text: ''};
+        socket.on('typing', isTyping => this.props.handleTyping(isTyping));
+    }
+
+    componentWillUnmount() {
+        socket.off('typing');
     }
 
     handleSubmit(e) {
@@ -20,12 +25,11 @@ class MessageForm extends Component {
     }
 
     changeHandler(e) {
-        this.setState({ text: e.target.value });
         socket.emit('typing', {
             from: this.props.name,
             typing: true
         });
-        socket.on('typing', isTyping => this.props.handleTyping(isTyping))
+        this.setState({ text: e.target.value });
     }
 
     render() {
