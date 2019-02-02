@@ -24,11 +24,12 @@ class App extends Component {
         let {messages, name} = this.state;
         const users = typingMessage.usersTyping.filter(user => user !== name);
         const usersTyping = users.join(' & ');
-        if (users.length === 1) {
-            typingMessage.text = `${usersTyping} is typing...`;
-        } else if (users.length > 1) {
-            typingMessage.text = `${usersTyping} are typing...`;
-        }
+        typingMessage.text = `${usersTyping} ${(users.length > 1) ? 'are' : 'is'} typing...`;
+        // if (users.length === 1) {
+        //     typingMessage.text = `${usersTyping} is typing...`;
+        // } else if (users.length > 1) {
+        //     typingMessage.text = `${usersTyping} are typing...`;
+        // }
         messages = [typingMessage, ...messages.filter(msg => !msg.typing)];
         this.setState({ messages: [...messages] });
     }
