@@ -21,8 +21,8 @@ class App extends Component {
     }
 
     handleTyping(typingMessage) {
-        let {messages} = this.state;
-        const users = typingMessage.usersTyping;
+        let {messages, name} = this.state;
+        const users = typingMessage.usersTyping.filter(user => user !== name);
         const usersTyping = users.join(' & ');
         if (users.length === 1) {
             typingMessage.text = `${usersTyping} is typing...`;
@@ -39,8 +39,7 @@ class App extends Component {
         this.setState({ messages });
     }
 
-    handleWelcome(hello) {
-        const welcomeMessage = hello;
+    handleWelcome(welcomeMessage) {
         const messages = [welcomeMessage, ...this.state.messages];
         this.setState({ messages });
     }

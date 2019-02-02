@@ -58,7 +58,7 @@ io.on('connection', (socket) => {
 io.on('connection', (socket) => {
     socket.on('message', (message) => {
         const user = usersService.getUserById(socket.id);
-        usersService.removeTyping(message.from);
+        usersService.clearTyping();
         if (user) {
             const {name} = user;
             socket.broadcast.emit('message', {

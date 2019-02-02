@@ -22,8 +22,8 @@ class UsersService {
         this.usersTyping = _.uniq([isTyping, ...this.usersTyping]);
     }
 
-    removeTyping(notTyping) {
-        this.usersTyping = this.usersTyping.filter(user => user !== notTyping);
+    clearTyping() {
+        this.usersTyping = [];
     }
 
     getAllTyping() {
